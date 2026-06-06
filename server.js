@@ -11,7 +11,7 @@ app.use(express.json());
 let rsvpList = [];
 let wishList = [];
 
-// API Xác nhận tham dự
+// API Xác nhận tham dự - POST
 app.post('/api/rsvp', (req, res) => {
     const { guest_name, phone_number, is_attending, companion_count } = req.body;
     
@@ -34,7 +34,7 @@ app.post('/api/rsvp', (req, res) => {
     res.json({ success: true, message: 'Đã ghi nhận xác nhận!' });
 });
 
-// API Lời chúc
+// API Lời chúc - POST (gửi lời chúc mới)
 app.post('/api/wishes', (req, res) => {
     const { guest_name, wishes_message } = req.body;
     
@@ -55,14 +55,19 @@ app.post('/api/wishes', (req, res) => {
     res.json({ success: true, message: 'Đã ghi nhận lời chúc!' });
 });
 
-// API Xem dữ liệu
-app.get('/api/data', (req, res) => {
-    const sorted = [...wishList].reverse(); // mới nhất trước
-    res.json({ rsvp: rsvpList, wishes: sorted });
-
+// API Lấy danh sách lời chúc - GET
+app.get('/api/wishes', (req, res) => {
+    const sortedWishes = [...wishList].reverse();
+    res.json({ wishes: sortedWishes });
 });
 
+// API Xem toàn bộ dữ liệu (RSVP + Wishes) - GET
+app.get('/api/data', (req, res) => {
+    const sortedWishes = [...wishList].reverse();
+    res.json({ rsvp: rsvpList, wishes: sortedWishes });
+});
 
+// Khởi động server
 app.listen(PORT, () => {
     console.log(`Backend dang chay tai cong ${PORT}`);
 });
