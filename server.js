@@ -57,8 +57,11 @@ app.post('/api/wishes', (req, res) => {
 
 // API Xem dữ liệu
 app.get('/api/data', (req, res) => {
-    res.json({ rsvp: rsvpList, wishes: wishList });
+    const sorted = [...wishList].reverse(); // mới nhất trước
+    res.json({ rsvp: rsvpList, wishes: sorted });
+
 });
+
 
 app.listen(PORT, () => {
     console.log(`Backend dang chay tai cong ${PORT}`);
